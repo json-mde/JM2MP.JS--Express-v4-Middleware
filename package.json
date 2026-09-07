@@ -1,7 +1,7 @@
 {
-  "name": "@json-mde/jm2mp-express-v4",
+  "name": "@json-mde/jm2mp-express4",
   "version": "1.0.0",
-  "description": "Command line interface (CLI) for JM2MP.JS library.",
+  "description": "Express.js v4 Middleware for JSON Model-to-Model Projection (JM2MP) JavaScript Library (JM2MP.JS).",
   "license": "BSD-3-Clause",
   "author": {
     "name": "Luis Maria CAMARA ROSSI",
@@ -37,7 +37,10 @@
     "./LICENSE.txt",
     "./CHANGELOG.md",
     "./src/middleware.js",
-    "./src/server.js"
+    "./src/server.js",
+    "./projections/courses-students.json",
+    "./projections/inventory.json",
+    "./projections/pi.json"
   ],
   "scripts": {
     "all": "npm run test:coverage && npm run eslint",
