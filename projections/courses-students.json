@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-mde.tech/schemas/jm2mp/",
+  "$options": {
+    "$version": "1.0",
+    "$default-query-language": "native",
+    "$annotations": "Projection document for 'courses and students' example."
+  },
+  "$": {
+    "university": { "$op": "get", "$path": "$.university" },
+    "period": { "$op": "get", "$path": "$.period" },
+    "students": {
+      "$op": "foldObj",
+      "$over": {
+        "$op": "foldObj",
+        "$over": { "$op": "get", "$path": "$.courses" },
+        "$init": {},
+        "$step": {
+          "$op": "let",
+          "$bindings": {
+            "credits": { "$op": "get", "$path": "@.value.credits" }
+          },
+          "$in": {
+            "$op": "foldArr",
+            "$over": { "$op": "get", "$path": "@.value.enrollments" },
+            "$init": { "$op": "get", "$path": "@.acc" },
+            "$step": {
+              "$op": "if",
+              "$cond": {
+                "$op": "eq",
+                "$left":  { "$op": "get", "$path": "@.item.grade" },
+                "$right": null
+              },
+              "$then": { "$op": "get", "$path": "@.acc" },
+              "$else": {
+                "$op": "let",
+                "$bindings": {
+                  "student": { "$op": "get", "$path": "@.item.student" },
+                  "grade":   { "$op": "get", "$path": "@.item.grade" },
+                  "accI":    { "$op": "get", "$path": "@.acc" }
+                },
+                "$in": {
+                  "$op": "let",
+                  "$bindings": {
+                    "previous_step": {
+                      "$op": "lookup",
+                      "$key": { "$op": "get", "$path": "%student" },
+                      "$in":  { "$op": "get", "$path": "%accI" }
+                    }
+                  },
+                  "$in": {
+                    "$op": "insert",
+                    "$key": { "$op": "get", "$path": "%student" },
+                    "$value": {
+                      "passing_credits": {
+                        "$op": "add",
+                        "$left": {
+                          "$op": "coalesce",
+                          "$value": {
+                            "$op": "lookup",
+                            "$key": "passing_credits",
+                            "$in": { "$op": "get", "$path": "%previous_step" }
+                          },
+                          "$default": 0
+                        },
+                        "$right": {
+                          "$op": "if",
+                          "$cond": {
+                            "$op": "gte",
+                            "$left":  { "$op": "get", "$path": "%grade" },
+                            "$right": { "$op": "get", "$path": "$.passing_grade" }
+                          },
+                          "$then": { "$op": "get", "$path": "%credits" },
+                          "$else": 0
+                        }
+                      },
+                      "sum_of_grades": {
+                        "$op": "add",
+                        "$left": {
+                          "$op": "coalesce",
+                          "$value": {
+                            "$op": "lookup",
+                            "$key": "sum_of_grades",
+                            "$in":  { "$op": "get", "$path": "%previous_step" }
+                          },
+                          "$default": 0
+                        },
+                        "$right": { "$op": "get", "$path": "%grade" }
+                      },
+                      "enrolled_courses": {
+                        "$op": "add",
+                        "$left": {
+                          "$op": "coalesce",
+                          "$value": {
+                            "$op": "lookup",
+                            "$key": "enrolled_courses",
+                            "$in":  { "$op": "get", "$path": "%previous_step" }
+                          },
+                          "$default": 0
+                        },
+                        "$right": 1
+                      }
+                    },
+                    "$into": { "$op": "get", "$path": "%accI" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "$init": {},
+      "$step": {
+        "$op": "insert",
+        "$key": { "$op": "get", "$path": "@.key" },
+        "$value": {
+          "passing_credits": { "$op": "get", "$path": "@.value.passing_credits" },
+          "sum_of_grades": { "$op": "get", "$path": "@.value.sum_of_grades" },
+          "enrolled_courses": { "$op": "get", "$path": "@.value.enrolled_courses" },
+          "average_grade": {
+            "$op": "div",
+            "$left":  { "$op": "get", "$path": "@.value.sum_of_grades" },
+            "$right": { "$op": "get", "$path": "@.value.enrolled_courses" }
+          }
+        },
+        "$into": { "$op": "get", "$path": "@.acc" }
+      }
+   }
+  }
+}

@@ -1,0 +1,47 @@
+##############
+# GIT IGNORE #
+##############
+
+### Git MailMap
+.mailmap
+
+### Node.JS modules, installed dependencies.
+node_modules/
+
+### Test code-coverage results (generated using `npm run test:coverage*`).
+coverage/
+coverage.lcov
+.nyc_output/
+
+### JSDoc automatically generated documentation.
+doc/jsdoc-out/
+
+### Source code editors and IDEs.
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+### Operating systems.
+.DS_Store
+Thumbs.db
+.lnk
+
+### Configuration of local environment variables.
+.env
+.env.local
+.env.*.local
+
+### Version locking for package management (npm/yarn/pnpm).
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
+
+### Logs from package management (npm/yarn/pnpm).
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# End of File.

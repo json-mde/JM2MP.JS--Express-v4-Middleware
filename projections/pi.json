@@ -1,0 +1,42 @@
+{
+  "$schema": "https://github.json-mde.tech/schemas/jm2mp/1.0.0/JM2MP-v1.0.0--JSON-Schema-Draft-2020-12.json",
+  "$options": {
+    "$version": "1.0",
+    "$default-query-language": "native",
+    "$annotations": "The _projection document_ contains the [Gregory-Liebniz (or Madhava-Leibniz) Series](https://www.kirupa.chat/p/life-of-pi-calculating-its-value) formulae to calculate an approximation of number [Pi (π)](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/PI) in a recursive manner."
+  },
+  "$": {
+    "$op": "mul",
+    "$left": 4,
+    "$right": { "$op": "call",
+                "$ref": "Pi",
+                "$at": 0 }
+  },
+
+  "Pi": {
+    "$op": "if",
+    "$cond": {
+      "$op": "lt",
+      "$left":  { "$op": "get", "$path": "@" },
+      "$right": { "$op": "get", "$path": "$" }
+    },
+    "$then": {
+      "$op": "sub",
+      "$left": { "$op": "div",
+                 "$left": 1,
+                 "$right": { "$op": "add",
+                             "$left": { "$op": "mul",
+                                        "$left": 2,
+                                        "$right": { "$op": "get", "$path": "@" } },
+                             "$right": 1 }
+      },
+      "$right": { "$op": "call",
+                  "$ref": "Pi",
+                  "$at": { "$op": "add",
+                           "$left": { "$op": "get", "$path": "@" },
+                           "$right": 1 }
+      }
+    },
+    "$else": 0
+  }
+}

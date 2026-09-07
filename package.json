@@ -1,0 +1,97 @@
+{
+  "name": "@json-mde/jm2mp-express-v4",
+  "version": "1.0.0",
+  "description": "Command line interface (CLI) for JM2MP.JS library.",
+  "license": "BSD-3-Clause",
+  "author": {
+    "name": "Luis Maria CAMARA ROSSI",
+    "email": "lcamara8@alumno.uned.es",
+    "url": "https://www.uned.es/universidad/facultades/en/departamentos/ingenieria-del-softw-y-sist-informaticos.html"
+  },
+  "contributors": [
+    {
+      "name": "Elena RUIZ LARROCHA",
+      "url": "https://www.uned.es/universidad/docentes/informatica/elena-ruiz-larrocha.html"
+    },
+    {
+      "name": "Jose Antonio CERRADA SOMOLINOS",
+      "url": "https://www.uned.es/universidad/docentes/informatica/jose-antonio-cerrada-somolinos.html"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/json-mde/JM2MP.JS--Express-v4-Middleware.git"
+  },
+  "homepage": "https://github.com/json-mde/JM2MP.JS--Express-v4-Middleware#readme",
+  "bugs": {
+    "url": "https://github.com/json-mde/JM2MP.JS--Express-v4-Middleware/issues"
+  },
+  "type": "module",
+  "private": false,
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "main": "./src/server.js",
+  "files": [
+    "./README.md",
+    "./LICENSE.txt",
+    "./CHANGELOG.md",
+    "./src/middleware.js",
+    "./src/server.js"
+  ],
+  "scripts": {
+    "all": "npm run test:coverage && npm run eslint",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "test:coverage": "node --test --experimental-test-coverage",
+    "test:coverage-lcov": "node --test --experimental-test-coverage --test-reporter=lcov --test-reporter-destination=coverage.lcov",
+    "eslint": "npx -- eslint",
+    "start": "node ./src/server.js"
+  },
+  "dependencies": {
+    "@json-mde/jm2mp": "^1.0.0",
+    "express": "~4.22.2",
+    "morgan": "^1.12.0"
+  },
+  "devDependencies": {
+    "@eslint/css": "~1.4.0",
+    "@eslint/js": "~10.0.1",
+    "@eslint/json": "~2.1.0",
+    "@eslint/markdown": "~8.0.3",
+    "@stylistic/eslint-plugin": "~5.10.0",
+    "eslint": "~10.10.0",
+    "globals": "~17.12.0"
+  },
+  "keywords": [
+    "jm2mp",
+    "jm2mp.js",
+    "json",
+    "model",
+    "models",
+    "projection",
+    "projections",
+    "transformation",
+    "transformations",
+    "algebra",
+    "algebraic",
+    "declarative",
+    "functional",
+    "jsonpath",
+    "jsonata",
+    "jsonquery",
+    "jsonpointer",
+    "rfc6901",
+    "jmespath",
+    "web",
+    "application",
+    "web application",
+    "service",
+    "web service",
+    "API",
+    "express",
+    "Express.js",
+    "express 4",
+    "express v4",
+    "middleware"
+  ]
+}

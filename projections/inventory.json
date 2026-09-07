@@ -1,0 +1,128 @@
+{
+    "$schema": "https://json-mde.tech/schemas/jm2mp/1.0.0/",
+    "$options": {
+        "$version": "1.0",
+        "$default-query-language": "native",
+        "$annotations": "Projection document for 'inventory' example."
+    },
+    "$": {
+        "store": {
+            "$op": "get",
+            "$path": "$.store"
+        },
+        "total_inventory_value": {
+            "$op": "foldObj",
+            "$over": {
+                "$op": "get",
+                "$path": "$.products"
+            },
+            "$init": 0,
+            "$step": {
+                "$op": "add",
+                "$left": {
+                    "$op": "get",
+                    "$path": "@.acc"
+                },
+                "$right": {
+                    "$op": "mul",
+                    "$left": {
+                        "$op": "get",
+                        "$path": "@.value.stock"
+                    },
+                    "$right": {
+                        "$op": "get",
+                        "$path": "@.value.price"
+                    }
+                }
+            }
+        },
+        "products_below_critical_threshold": {
+            "$op": "foldObj",
+            "$over": {
+                "$op": "get",
+                "$path": "$.products"
+            },
+            "$init": {},
+            "$step": {
+                "$op": "if",
+                "$cond": {
+                    "$op": "lte",
+                    "$left": {
+                        "$op": "get",
+                        "$path": "@.value.stock"
+                    },
+                    "$right": {
+                        "$op": "get",
+                        "$path": "$.threshold"
+                    }
+                },
+                "$then": {
+                    "$op": "insert",
+                    "$key": {
+                        "$op": "get",
+                        "$path": "@.key"
+                    },
+                    "$value": {
+                        "name": {
+                            "$op": "get",
+                            "$path": "@.value.name"
+                        },
+                        "stock": {
+                            "$op": "get",
+                            "$path": "@.value.stock"
+                        }
+                    },
+                    "$into": {
+                        "$op": "get",
+                        "$path": "@.acc"
+                    }
+                },
+                "$else": {
+                    "$op": "get",
+                    "$path": "@.acc"
+                }
+            }
+        },
+        "stock_per_category": {
+            "$op": "foldObj",
+            "$over": {
+                "$op": "get",
+                "$path": "$.products"
+            },
+            "$init": {},
+            "$step": {
+                "$op": "insert",
+                "$key": {
+                    "$op": "get",
+                    "$path": "@.value.category"
+                },
+                "$value": {
+                    "$op": "add",
+                    "$left": {
+                        "$op": "coalesce",
+                        "$value": {
+                            "$op": "lookup",
+                            "$key": {
+                                "$op": "get",
+                                "$path": "@.value.category"
+                            },
+                            "$in": {
+                                "$op": "get",
+                                "$path": "@.acc"
+                            }
+                        },
+                        "$default": 0
+                    },
+                    "$right": {
+                        "$op": "get",
+                        "$path": "@.value.stock"
+                    }
+                },
+                "$into": {
+                    "$op": "get",
+                    "$path": "@.acc"
+                }
+            }
+        }
+    }
+}
