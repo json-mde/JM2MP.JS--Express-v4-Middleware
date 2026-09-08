@@ -25,7 +25,7 @@
  * the following order, from: 1) the `:projection`
  * ({@link DEFAULT_JM2MP_PARAMETER_NAME}) path parameter,
  * 2) the `X-JM2MP-Projection` ({@link DEFAULT_JM2MP_REQUEST_HEADER})
- * request header, or 3) the `projection` field from the query string.
+ * request header, or 3) the `?projection=` field from the _query string_.
  * 
  * The _resultant document_ will be returned into the **response**.
  *
@@ -67,7 +67,7 @@ import * as JM2MP from '@json-mde/jm2mp';
 /* ------------------------------------------------------------------ */
 
 /**
- * @constant {string} DEFAULT_PARAM_NAME
+ * @constant {string}
  * @description
  * The parameter name used for projections.
  * 
@@ -78,7 +78,7 @@ export const DEFAULT_JM2MP_PARAMETER_NAME = 'projection';
 /* ------------------------------------------------------------------ */
 
 /**
- * @constant {string} DEFAULT_PARAM_NAME
+ * @constant {string}
  * @description
  * The parameter name used for projections.
  * 
@@ -89,7 +89,7 @@ export const DEFAULT_JM2MP_REQUEST_HEADER = 'X-JM2MP-Projection';
 /* ------------------------------------------------------------------ */
 
 /**
- * @constant {string} __dirname
+ * @constant {string}
  * @description
  * The root directory where all _projection documents_ and _modules_
  * must be contained.
@@ -104,7 +104,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /* ------------------------------------------------------------------ */
 
 /**
- * @constant {string} PROJECTIONS_DIR
+ * @constant {string}
  * @description
  * The absolte path to the root directory that will contain all
  * _projection documents_ and _modules_.
@@ -168,7 +168,8 @@ function statusForError(err)
  * @description
  * It creates the actual _middleware_ for `Express.js v4` to
  * use `JM2MP` projections.
- * @param {object} [opts]
+ * @param {object} [opts={}]
+ * Options.
  * @param {string} [opts.baseDir=PROJECTIONS_DIR]
  * The root directory where all _projection documents_ and _modules_
  * must be found.
@@ -181,7 +182,7 @@ function statusForError(err)
  * is created (which only accepts syntax from the `native` _query
  * language_).
  * @returns {Promise<express.RequestHandler>}
- */
+**/
 export async function Create(opts = {})
 {
   // It processes every option or uses their default value.
@@ -225,7 +226,7 @@ export async function Create(opts = {})
     // v4` will use an empty object `{}` which is a valid JSON value and
     // it will be used as is.
     const document = req.body;
-    console.debug(`source document (${(typeof document)}) => '${JSON.stringify(document)}'`);
+    console.debug(`source document (${(typeof document)}) => ${JSON.stringify(document)}`);
 
     // Step 3: the JM2MP.JS pipeline is executed:
     // resolve --> validate --> evaluate.
